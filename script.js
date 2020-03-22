@@ -1,3 +1,6 @@
+window.onload = function () {
+    document.getElementById('test').focus();
+};
 var names = {
     0: 'zéro',
     1: 'un',
