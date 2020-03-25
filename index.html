@@ -15,6 +15,12 @@
       [v-cloak] {
         display: none;
       }
+      .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+      }
+      .fade-enter, .fade-leave-to {
+        opacity: 0;
+      }
     </style>
   </head>
   <body>
@@ -44,9 +50,20 @@
         id="results"
         class="px-8 py-2 mx-0 mt-5 container-xl md:px-16 lg:px-20 xl:px-32"
       >
+      <div v-if="input !== ''">
+        <button
+          v-on:click="copyToClipboard"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold mb-2 px-3 rounded"
+        >
+          Copier
+        </button>
+        <transition name="fade">
+          <span v-if="displayCheck" class="text-green-700">✔ Copié !</span>
+        </transition>
+      </div>
         <p
           v-if="input !== ''"
-          class="text-xl font-bold md:text-2xl lg:text-4xl"
+          class="text-xl font-bold md:text-2xl lg:text-4xl select-all"
         >
           {{ result }}
         </p>

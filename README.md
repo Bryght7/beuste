@@ -1,1 +1,1 @@
-# Test initialisation
+# Beuste - Écriture des nombres en lettres

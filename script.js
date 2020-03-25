@@ -2,9 +2,21 @@ new Vue({
   el: "#app",
   data: {
     input: "",
-    result: ""
+    result: "",
+    displayCheck: false
   },
   methods: {
+    copyToClipboard: function(event) {
+        const copyHelper = document.createElement("input");
+        copyHelper.className = 'copyhelper'
+        document.body.appendChild(copyHelper);
+        copyHelper.value = this.result;
+        copyHelper.select();
+        document.execCommand("copy");
+        document.body.removeChild(copyHelper);
+        this.displayCheck = true;
+        setTimeout(() => { this.displayCheck = false; }, 1500);
+    },
     onInput: function(event) {
       this.result = "";
       const resultArray = [];
