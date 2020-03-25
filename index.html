@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <script src="script.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>Beuste - Écriture des nombres en lettres</title>
-</head>
-<body>
-    <nav>
-        <div class="container-xl mx-0 px-8 md:px-16 py-2">
-          <a class="font-bold text-lg" href="#">Beuste</a>
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <nav>
+        <div class="px-8 py-2 mx-0 container-xl md:px-16 lg:px-20 xl:px-32">
+          <a class="text-lg font-bold" href="#">Beuste</a>
         </div>
-    </nav>
-    <header class="container-xl mx-0 px-8 md:px-16 py-8 lg:py-16 text-white text-center" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%)">
-        <h1 class="text-2xl md:text-3xl lg:text-5xl font-bold">Écriture des nombres en lettres</h1>
-        <form class="mt-5 sm:mt-10" onsubmit="onClick()">
-            <input id="test" type="number" placeholder="Saisir un nombre..." class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" autofocus>
+      </nav>
+      <section
+        class="px-8 py-8 mx-0 text-center text-white bg-indigo-500 container-xl md:px-16 lg:px-20 xl:px-32 lg:py-16"
+      >
+        <h1 class="text-2xl font-bold md:text-3xl lg:text-5xl">
+          Écriture des nombres en lettres
+        </h1>
+        <form class="mt-5 sm:mt-10">
+          <input
+            v-model.number="input"
+            v-on:input="onInput"
+            type="number"
+            placeholder="Saisie..."
+            class="w-full px-3 py-2 text-3xl font-semibold leading-tight text-black border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+          />
         </form>
-    </header>
-    <section>
+      </section>
+      <section
+        id="results"
+        class="px-8 py-2 mx-0 mt-5 container-xl md:px-16 lg:px-20 xl:px-32"
+      >
+        <p
+          v-if="input !== ''"
+          class="text-xl font-bold md:text-2xl lg:text-4xl"
+        >
+          {{ result }}
+        </p>
+      </section>
+    </div>
 
-    </section>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
