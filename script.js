@@ -4,11 +4,15 @@ new Vue({
     input: "",
     result: "",
     displayCheck: false,
-    darkModeOn: false
+    isDarkMode: false
+  },
+  created: function() {
+    this.isDarkMode = localStorage.getItem("isDarkMode") === "true";
   },
   methods: {
     switchMode: function(event) {
-      this.darkModeOn = !this.darkModeOn;
+      this.isDarkMode = !this.isDarkMode;
+      localStorage.setItem("isDarkMode", this.isDarkMode);
     },
     copyToClipboard: function(event) {
       const copyHelper = document.createElement("input");

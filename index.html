@@ -34,7 +34,7 @@
     <div
       id="app"
       class="h-full transition-colors duration-1000 ease-in-out"
-      v-bind:class="{ 'bg-gray-800': darkModeOn }"
+      v-bind:class="{ 'bg-gray-800': isDarkMode }"
       v-cloak
     >
       <nav>
@@ -43,23 +43,23 @@
         >
           <span
             class="font-bold cursor-default"
-            v-bind:class="{ 'text-gray-200': darkModeOn }"
+            v-bind:class="{ 'text-gray-200': isDarkMode }"
             >Beuste</span
           >
           <div
             class="text-2xl"
-            v-bind:class="darkModeOn ? 'text-gray-300' : 'text-gray-600'"
+            v-bind:class="isDarkMode ? 'text-gray-300' : 'text-gray-600'"
           >
             <i
               class="fas fa-adjust cursor-pointer"
-              v-bind:class="darkModeOn ? 'hover:text-white' : 'hover:text-black'"
-              v-bind:title="darkModeOn ? 'Mode clair' : 'Mode sombre'"
+              v-bind:class="isDarkMode ? 'hover:text-white' : 'hover:text-black'"
+              v-bind:title="isDarkMode ? 'Mode clair' : 'Mode sombre'"
               @click="switchMode"
             ></i>
             <a href="https://github.com/Bryght7/beuste"
               ><i
                 class="fab fa-github ml-2"
-                v-bind:class="darkModeOn ? 'hover:text-white' : 'hover:text-black'"
+                v-bind:class="isDarkMode ? 'hover:text-white' : 'hover:text-black'"
                 title="GitHub"
               ></i
             ></a>
@@ -68,7 +68,7 @@
       </nav>
       <section
         class="transition-colors duration-1000 ease-in-out px-8 py-8 mx-0 text-center text-white container-xl md:px-16 lg:px-20 xl:px-32 lg:py-16"
-        v-bind:class="darkModeOn ? 'bg-teal-700' : 'bg-indigo-500'"
+        v-bind:class="isDarkMode ? 'bg-teal-700' : 'bg-indigo-500'"
       >
         <h1 class="text-2xl font-bold md:text-3xl lg:text-5xl">
           Écriture des nombres en lettres
@@ -78,7 +78,7 @@
           @input="onInput"
           type="number"
           placeholder="Saisie..."
-          v-bind:class="darkModeOn ? ['text-gray-200', 'bg-gray-700'] : 'text-black'"
+          v-bind:class="isDarkMode ? ['text-gray-200', 'bg-gray-700'] : 'text-black'"
           class="mt-5 sm:mt-10 transition-colors duration-500 ease-in-out w-full px-3 py-2 text-3xl font-semibold leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         />
       </section>
@@ -97,7 +97,7 @@
             <span
               v-if="displayCheck"
               class="ml-2"
-              v-bind:class="darkModeOn ? 'text-green-300' : 'text-green-700'"
+              v-bind:class="isDarkMode ? 'text-green-300' : 'text-green-700'"
               ><i class="fas fa-check"></i> Copié !</span
             >
           </transition>
@@ -105,7 +105,7 @@
         <p
           v-if="input !== ''"
           class="text-xl font-bold md:text-2xl lg:text-4xl select-all"
-          v-bind:class="{ 'text-white' : darkModeOn }"
+          v-bind:class="{ 'text-white' : isDarkMode }"
         >
           {{ result }}
         </p>
