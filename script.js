@@ -3,19 +3,25 @@ new Vue({
   data: {
     input: "",
     result: "",
-    displayCheck: false
+    displayCheck: false,
+    darkModeOn: false
   },
   methods: {
+    switchMode: function(event) {
+      this.darkModeOn = !this.darkModeOn;
+    },
     copyToClipboard: function(event) {
-        const copyHelper = document.createElement("input");
-        copyHelper.className = 'copyhelper'
-        document.body.appendChild(copyHelper);
-        copyHelper.value = this.result;
-        copyHelper.select();
-        document.execCommand("copy");
-        document.body.removeChild(copyHelper);
-        this.displayCheck = true;
-        setTimeout(() => { this.displayCheck = false; }, 1500);
+      const copyHelper = document.createElement("input");
+      copyHelper.className = "copyhelper";
+      document.body.appendChild(copyHelper);
+      copyHelper.value = this.result;
+      copyHelper.select();
+      document.execCommand("copy");
+      document.body.removeChild(copyHelper);
+      this.displayCheck = true;
+      setTimeout(() => {
+        this.displayCheck = false;
+      }, 1500);
     },
     onInput: function(event) {
       this.result = "";

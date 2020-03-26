@@ -10,39 +10,77 @@
     />
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script
+      src="https://kit.fontawesome.com/51446710ae.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js" defer></script>
     <title>Beuste - Écriture des nombres en lettres</title>
     <style>
       [v-cloak] {
         display: none;
       }
-      .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: opacity 0.5s;
       }
-      .fade-enter, .fade-leave-to {
+      .fade-enter,
+      .fade-leave-to {
         opacity: 0;
       }
     </style>
   </head>
-  <body>
-    <div id="app" v-cloak>
+  <body class="h-screen">
+    <div
+      id="app"
+      class="h-full transition-colors duration-1000 ease-in-out"
+      v-bind:class="{ 'bg-gray-800': darkModeOn }"
+      v-cloak
+    >
       <nav>
-        <div class="px-8 py-2 mx-0 container-xl md:px-16 lg:px-20 xl:px-32">
-          <a class="text-lg font-bold" href="#">Beuste</a>
+        <div
+          class="flex justify-between items-center text-lg px-8 py-2 mx-0 container-xl md:px-16 lg:px-20 xl:px-32"
+        >
+          <span
+            class="font-bold cursor-default"
+            v-bind:class="{ 'text-gray-200': darkModeOn }"
+            >Beuste</span
+          >
+          <div
+            class="text-2xl"
+            v-bind:class="darkModeOn ? 'text-gray-300' : 'text-gray-600'"
+          >
+            <i
+              class="fas fa-adjust cursor-pointer"
+              v-bind:class="darkModeOn ? 'hover:text-white' : 'hover:text-black'"
+              v-bind:title="darkModeOn ? 'Mode clair' : 'Mode sombre'"
+              @click="switchMode"
+            ></i>
+            <a href="https://github.com/Bryght7/beuste"
+              ><i
+                class="fab fa-github ml-2"
+                v-bind:class="darkModeOn ? 'hover:text-white' : 'hover:text-black'"
+                title="GitHub"
+              ></i
+            ></a>
+          </div>
         </div>
       </nav>
       <section
-        class="px-8 py-8 mx-0 text-center text-white bg-indigo-500 container-xl md:px-16 lg:px-20 xl:px-32 lg:py-16"
+        class="transition-colors duration-1000 ease-in-out px-8 py-8 mx-0 text-center text-white container-xl md:px-16 lg:px-20 xl:px-32 lg:py-16"
+        v-bind:class="darkModeOn ? 'bg-teal-700' : 'bg-indigo-500'"
       >
         <h1 class="text-2xl font-bold md:text-3xl lg:text-5xl">
           Écriture des nombres en lettres
         </h1>
-        <form class="mt-5 sm:mt-10">
+        <form class="mt-5 sm:mt-10 ">
           <input
             v-model.number="input"
-            v-on:input="onInput"
+            @input="onInput"
             type="number"
             placeholder="Saisie..."
-            class="w-full px-3 py-2 text-3xl font-semibold leading-tight text-black border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            v-bind:class="darkModeOn ? ['text-gray-200', 'bg-gray-700'] : 'text-black'"
+            class="transition-colors duration-500 ease-in-out w-full px-3 py-2 text-3xl font-semibold leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
           />
         </form>
       </section>
@@ -50,26 +88,30 @@
         id="results"
         class="px-8 py-2 mx-0 mt-5 container-xl md:px-16 lg:px-20 xl:px-32"
       >
-      <div v-if="input !== ''">
-        <button
-          v-on:click="copyToClipboard"
-          class="bg-green-500 hover:bg-green-700 text-white font-bold mb-2 px-3 rounded"
-        >
-          Copier
-        </button>
-        <transition name="fade">
-          <span v-if="displayCheck" class="text-green-700">✔ Copié !</span>
-        </transition>
-      </div>
+        <div v-if="input !== ''">
+          <button
+            v-on:click="copyToClipboard"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold mb-2 px-3 rounded"
+          >
+            Copier
+          </button>
+          <transition name="fade">
+            <span
+              v-if="displayCheck"
+              class="ml-2"
+              v-bind:class="darkModeOn ? 'text-green-300' : 'text-green-700'"
+              ><i class="fas fa-check"></i> Copié !</span
+            >
+          </transition>
+        </div>
         <p
           v-if="input !== ''"
           class="text-xl font-bold md:text-2xl lg:text-4xl select-all"
+          v-bind:class="{ 'text-white' : darkModeOn }"
         >
           {{ result }}
         </p>
       </section>
     </div>
-
-    <script src="script.js"></script>
   </body>
 </html>
