@@ -14,7 +14,7 @@
       src="https://kit.fontawesome.com/51446710ae.js"
       crossorigin="anonymous"
     ></script>
-    <script src="script.js" defer></script>
+    <script src="script.js?v=1" defer></script>
     <title>Beuste - Écriture des nombres en lettres</title>
     <style>
       [v-cloak] {
@@ -73,14 +73,22 @@
         <h1 class="text-2xl font-bold md:text-3xl lg:text-5xl">
           Écriture des nombres en lettres
         </h1>
-        <input
-          v-model.number="input"
-          @input="onInput"
-          type="number"
-          placeholder="Saisie..."
-          v-bind:class="isDarkMode ? ['text-gray-200', 'bg-gray-700'] : 'text-black'"
-          class="mt-5 sm:mt-10 transition-colors duration-500 ease-in-out w-full px-3 py-2 text-3xl font-semibold leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-        />
+        <div class="flex flex-row mt-5 sm:mt-10 text-3xl">
+          <input
+            v-model.number="input"
+            @input="onInput"
+            type="number"
+            placeholder="Saisie..."
+            v-bind:class="isDarkMode ? ['text-gray-200', 'bg-gray-700'] : 'text-black'"
+            class="w-full transition-colors duration-500 ease-in-out px-3 py-2 font-semibold leading-tight border rounded-lg rounded-r-none shadow appearance-none focus:outline-none focus:shadow-outline"
+          />
+          <button
+            class="w-18 bg-red-500 hover:bg-red-700 text-white font-bold px-5 rounded-lg rounded-l-none"
+            @click="input = ''"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       </section>
       <section
         id="results"
