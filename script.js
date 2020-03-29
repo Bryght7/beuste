@@ -28,40 +28,14 @@ new Vue({
       }, 1500);
     },
     onInput: function(event) {
-      this.result = "";
-      const resultArray = [];
-      const input = event.target.value;
-      if (!input) {
+      if (!this.input) {
         return;
       }
-      separateThousands(input).forEach((num, index, arr) => {
-        const separatorName = getSeparatorName(index, arr);
-
-        // if number ends with '80' OR number is 200,300,...,900
-        // followed by "mille", then no plural -s in 'quatre-vingt' nor 'cent'
-        if (
-          (num.toString().slice(-2) === "80" ||
-            (num >= 200 && num % 100 === 0)) &&
-          separatorName === "mille"
-        ) {
-          resultArray.push(getNumberName(num).slice(0, -1)); // remove the -s
-          resultArray.push(separatorName);
-          return;
-        }
-        // if [1, 0]
-        if (num === 1 && separatorName === "mille") {
-          resultArray.push(separatorName); // only print 'mille' instead of 'un mille'
-          return;
-        }
-        // if 0 in a number with > 1 part, like in [125, 0, 0]
-        if (num === 0 && arr.length > 1) {
-          return; // ignore it
-        }
-        // default behavior
-        resultArray.push(getNumberName(num));
-        resultArray.push(separatorName);
-      });
-      this.result = resultArray.filter(s => s !== "").join(" ");
+      const wholePart = convertToText(Math.floor(Math.abs(this.input))); // abs to ignore negative numbers
+      const decimalPart = this.input.toString().split(".")[1]; // will be undefined if no decimal part
+      this.result = decimalPart
+        ? wholePart + " virgule " + convertToText(parseInt(decimalPart))
+        : wholePart;
     }
   }
 });
@@ -103,6 +77,44 @@ const separators = {
 };
 
 /**
+ * @param {number} input A whole number
+ * @returns {string} Input number converted to text
+ */
+function convertToText(input) {
+  const resultArray = [];
+  if (input.toString().indexOf(".") !== -1) {
+    // if not a whole number
+    throw Error("This function expects `input` to be a whole number.");
+  }
+  separateThousands(input.toString()).forEach((num, index, arr) => {
+    const separatorName = getSeparatorName(index, arr);
+    // if number ends with '80' OR number is 200,300,...,900
+    // followed by "mille", then no plural -s in 'quatre-vingt' nor 'cent'
+    if (
+      (num.toString().slice(-2) === "80" || (num >= 200 && num % 100 === 0)) &&
+      separatorName === "mille"
+    ) {
+      resultArray.push(getNumberName(num).slice(0, -1)); // remove the -s
+      resultArray.push(separatorName);
+      return;
+    }
+    // if [1, 0]
+    if (num === 1 && separatorName === "mille") {
+      resultArray.push(separatorName); // only print 'mille' instead of 'un mille'
+      return;
+    }
+    // if 0 in a number with > 1 part, like in [125, 0, 0]
+    if (num === 0 && arr.length > 1) {
+      return; // ignore it
+    }
+    // default behavior
+    resultArray.push(getNumberName(num));
+    resultArray.push(separatorName);
+  });
+  return resultArray.filter(s => s !== "").join(" ");
+}
+
+/**
  * @param {string} str
  * @returns {string}
  */
@@ -114,8 +126,12 @@ function reverse(str) {
 }
 
 /**
- * @param {string} input
- * @returns {number[]}
+ * Separate a whole number into an array of its thousands parts.
+ *
+ * _e.g_ `'6486021351'` will return `[6, 486, 21, 351]`
+ *
+ * @param {string} input String representation of a whole number
+ * @returns {number[]} Array of thousands
  */
 function separateThousands(input) {
   // Examples with input = '6486021351',
@@ -136,7 +152,8 @@ function between(min, n, max) {
 }
 
 /**
- * @param {number} num
+ * Get the name of the specified whole number
+ * @param {number} num A whole number between 0 and 999
  * @returns {string}
  */
 function getNumberName(num) {
