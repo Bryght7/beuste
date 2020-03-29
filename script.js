@@ -2,42 +2,49 @@ new Vue({
   el: "#app",
   data: {
     input: "",
-    result: "",
-    displayCheck: false,
-    isDarkMode: false
+    results: {
+      traditional: {
+        label: "Traditionnelle",
+        value: "",
+        showCopySuccess: false,
+      },
+      monetary: {
+        label: "Monétaire",
+        value: "",
+        showCopySuccess: false,
+      },
+    },
+    isDarkMode: false,
   },
-  created: function() {
+  created: function () {
     this.isDarkMode = localStorage.getItem("isDarkMode") === "true";
   },
   methods: {
-    switchMode: function(event) {
+    switchMode: function (event) {
       this.isDarkMode = !this.isDarkMode;
       localStorage.setItem("isDarkMode", this.isDarkMode);
     },
-    copyToClipboard: function(event) {
+    copyToClipboard: function (resultKey) {
       const copyHelper = document.createElement("input");
       copyHelper.className = "copyhelper";
       document.body.appendChild(copyHelper);
-      copyHelper.value = this.result;
+      copyHelper.value = this.results[resultKey].value;
       copyHelper.select();
       document.execCommand("copy");
       document.body.removeChild(copyHelper);
-      this.displayCheck = true;
+      this.results[resultKey].showCopySuccess = true;
       setTimeout(() => {
-        this.displayCheck = false;
+        this.results[resultKey].showCopySuccess = false;
       }, 1500);
     },
-    onInput: function(event) {
+    onInput: function (event) {
       if (!this.input) {
         return;
       }
-      const wholePart = convertToText(Math.floor(Math.abs(this.input))); // abs to ignore negative numbers
-      const decimalPart = this.input.toString().split(".")[1]; // will be undefined if no decimal part
-      this.result = decimalPart
-        ? wholePart + " virgule " + convertToText(parseInt(decimalPart))
-        : wholePart;
-    }
-  }
+      this.results.traditional.value = getTraditionalSpelling(this.input);
+      this.results.monetary.value = getMonetarySpelling(this.input);
+    },
+  },
 });
 
 const names = {
@@ -63,7 +70,7 @@ const names = {
   40: "quarante",
   50: "cinquante",
   60: "soixante",
-  100: "cent"
+  100: "cent",
 };
 
 const separators = {
@@ -73,7 +80,7 @@ const separators = {
   5: "billion",
   6: "billiard",
   7: "trillion",
-  8: "trilliard"
+  8: "trilliard",
 };
 
 /**
@@ -111,7 +118,7 @@ function convertToText(input) {
     resultArray.push(getNumberName(num));
     resultArray.push(separatorName);
   });
-  return resultArray.filter(s => s !== "").join(" ");
+  return resultArray.filter((s) => s !== "").join(" ");
 }
 
 /**
@@ -119,10 +126,7 @@ function convertToText(input) {
  * @returns {string}
  */
 function reverse(str) {
-  return str
-    .split("")
-    .reverse()
-    .join("");
+  return str.split("").reverse().join("");
 }
 
 /**
@@ -138,7 +142,7 @@ function separateThousands(input) {
   const parts = reverse(input) // '1531206846'
     .match(/\d{1,3}/g) // ['153', '120', '684', '6']
     .reverse(); // ['6', '684', '120', '153']
-  return parts.map(p => parseInt(reverse(p), 10)); // [6, 486, 21, 351]
+  return parts.map((p) => parseInt(reverse(p), 10)); // [6, 486, 21, 351]
 }
 
 /**
@@ -221,4 +225,67 @@ function getSeparatorName(index, arr) {
       : separators[indexDesc];
   }
   return ""; // else no separator
+}
+
+/**
+ * @param {number} input
+ * @returns {string} Traditional spelling of the input number
+ */
+function getTraditionalSpelling(input) {
+  const wholePartNumber = Math.floor(Math.abs(input)); // abs to ignore negative numbers
+  const decimalPartNumber = parseInt(input.toString().split(".")[1]); // NaN if no decimal part
+
+  const wholePart = convertToText(wholePartNumber);
+  const decimalPart = isNaN(decimalPartNumber)
+    ? undefined
+    : convertToText(decimalPartNumber);
+
+  return decimalPart ? wholePart + " virgule " + decimalPart : wholePart;
+}
+
+/**
+ * @param {number} input
+ * @returns {string} Monetary spelling of the input number
+ */
+function getMonetarySpelling(input) {
+  let result = "";
+  const wholePartNumber = Math.floor(Math.abs(input)); // abs to ignore negative numbers
+  const decimalPartString = input.toString().split(".")[1]
+    ? input.toString().split(".")[1].padEnd(2, "0").slice(0, 2)
+    : undefined; // undefined if no decimal part
+  const decimalPartNumber = parseInt(decimalPartString); // NaN if no decimal part
+
+  const wholePart = convertToText(wholePartNumber);
+  const decimalPart = isNaN(decimalPartNumber)
+    ? undefined
+    : convertToText(decimalPartNumber);
+
+  result += wholePart + (wholePartNumber > 1 ? " euros" : " euro");
+  return decimalPart
+    ? result +
+        " et " +
+        decimalPart +
+        (decimalPartNumber > 1 ? " centimes" : " centime")
+    : result;
+}
+
+/**
+ * String.prototype.padEnd() polyfill
+ * https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd
+ */
+if (!String.prototype.padEnd) {
+  String.prototype.padEnd = function padEnd(targetLength, padString) {
+    targetLength = targetLength >> 0; //floor if number or convert non-number to 0;
+    padString = String(typeof padString !== "undefined" ? padString : " ");
+    if (this.length > targetLength) {
+      return String(this);
+    } else {
+      targetLength = targetLength - this.length;
+      if (targetLength > padString.length) {
+        padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+      }
+      return String(this) + padString.slice(0, targetLength);
+    }
+  };
 }

@@ -14,9 +14,13 @@
       src="https://kit.fontawesome.com/51446710ae.js"
       crossorigin="anonymous"
     ></script>
-    <script src="script.js?v=2" defer></script>
+    <script src="script.js?v=3" defer></script>
     <title>Beuste - Écriture des nombres en lettres</title>
     <style>
+      html,
+      body {
+        height: 100%;
+      }
       [v-cloak] {
         display: none;
       }
@@ -30,7 +34,7 @@
       }
     </style>
   </head>
-  <body class="h-screen">
+  <body>
     <div
       id="app"
       class="h-full transition-colors duration-1000 ease-in-out"
@@ -95,28 +99,35 @@
         class="px-8 py-2 mx-0 mt-5 container-xl md:px-16 lg:px-20 xl:px-32"
       >
         <div v-if="input !== ''">
-          <button
-            v-on:click="copyToClipboard"
-            class="bg-green-500 hover:bg-green-700 text-white font-bold mb-2 px-3 rounded"
-          >
-            Copier
-          </button>
-          <transition name="fade">
+          <div v-for="(result, key) in results" class="mb-8 md:mb-10">
             <span
-              v-if="displayCheck"
-              class="ml-2"
-              v-bind:class="isDarkMode ? 'text-green-300' : 'text-green-700'"
-              ><i class="fas fa-check"></i> Copié !</span
+              class="md:text-lg mr-3"
+              v-bind:class="{ 'text-white' : isDarkMode }"
+              >{{ result.label }}</span
             >
-          </transition>
+            <button
+              v-on:click="copyToClipboard(key)"
+              class="bg-green-500 hover:bg-green-700 text-white font-bold mb-2 px-3 rounded"
+            >
+              Copier
+            </button>
+            <transition name="fade">
+              <span
+                v-if="result.showCopySuccess"
+                class="ml-2"
+                v-bind:class="isDarkMode ? 'text-green-300' : 'text-green-700'"
+                ><i class="fas fa-check"></i> Copié !</span
+              >
+            </transition>
+            <p
+              v-if="input !== ''"
+              class="text-xl font-bold md:text-2xl lg:text-4xl select-all"
+              v-bind:class="{ 'text-white' : isDarkMode }"
+            >
+              {{ results[key].value }}
+            </p>
+          </div>
         </div>
-        <p
-          v-if="input !== ''"
-          class="text-xl font-bold md:text-2xl lg:text-4xl select-all"
-          v-bind:class="{ 'text-white' : isDarkMode }"
-        >
-          {{ result }}
-        </p>
       </section>
     </div>
   </body>
