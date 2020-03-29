@@ -17,10 +17,6 @@
     <script src="script.js?v=3" defer></script>
     <title>Beuste - Écriture des nombres en lettres</title>
     <style>
-      html,
-      body {
-        height: 100%;
-      }
       [v-cloak] {
         display: none;
       }
@@ -37,7 +33,7 @@
   <body>
     <div
       id="app"
-      class="h-full transition-colors duration-1000 ease-in-out"
+      class="h-full min-h-screen transition-colors duration-1000 ease-in-out"
       v-bind:class="{ 'bg-gray-800': isDarkMode }"
       v-cloak
     >
