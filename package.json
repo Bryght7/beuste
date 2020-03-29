@@ -1,0 +1,30 @@
+{
+  "name": "beuste",
+  "version": "1.0.0",
+  "description": "Ecriture des nombres en lettres",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretty-quick": "pretty-quick"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bryght7/beuste.git"
+  },
+  "author": "Bryan Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bryght7/beuste/issues"
+  },
+  "homepage": "https://github.com/Bryght7/beuste#readme",
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "prettier": "^2.0.2",
+    "pretty-quick": "^2.0.1"
+  }
+}
