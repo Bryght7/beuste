@@ -5,7 +5,6 @@ See the bottom of this document for the declaration of the reference variables
 
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -39,7 +38,6 @@ See the bottom of this document for the declaration of the reference variables
   - [Installation](#installation)
 - [Contributing](#contributing)
 - [License](#license)
-- [Contact](#contact)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -110,18 +108,10 @@ Contributions are what make the open source community such an amazing place to b
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-<!-- CONTACT -->
-
-## Contact
-
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [issues-shield]: https://img.shields.io/github/issues/Bryght7/beuste
 [issues-url]: https://github.com/Bryght7/beuste/issues
 [license-shield]: https://img.shields.io/github/license/Bryght7/beuste
 [license-url]: https://github.com/Bryght7/beuste/blob/master/LICENSE
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/bryan-lee-fr
 [product-screenshot]: http://g.recordit.co/G54t9LJG17.gif
